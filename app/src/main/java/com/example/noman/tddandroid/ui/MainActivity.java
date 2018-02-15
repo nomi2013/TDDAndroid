@@ -20,6 +20,10 @@ public class MainActivity extends DaggerAppCompatActivity implements MainView{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mainPresenter.attachView(this);
+       // mainPresenter.getData();
+        mainPresenter.getRealData();
     }
 
     @Override
@@ -28,8 +32,27 @@ public class MainActivity extends DaggerAppCompatActivity implements MainView{
     }
 
     @Override
+    public String getToken() {
+        return "";
+    }
+
+    @Override
+    public String getRealToken() {
+        return "hgfhddgdgfdgd";
+    }
+
+    @Override
+    public void emptyToken(String s) {
+        makeToast(s);
+    }
+
+    @Override
+    public void emptyNonToken(String s) {
+        makeToast(s);
+    }
+
+    @Override
     public void makeToast(String s) {
         Toast.makeText(this, s, Toast.LENGTH_SHORT).show();
-
     }
 }

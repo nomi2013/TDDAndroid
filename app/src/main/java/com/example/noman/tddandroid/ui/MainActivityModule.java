@@ -13,8 +13,8 @@ import dagger.Provides;
 public abstract class MainActivityModule {
 
     @Provides
-    static MainPresenter provideMainPresenter(MainView mainView, ApiService apiService) {
-        return new MainPresenterImpl(mainView, apiService);
+    static MainPresenter provideMainPresenter() {
+        return new MainPresenter();
     }
 
     @Binds
