@@ -17,22 +17,13 @@ public class MainPresenter extends BasePresenter<MainView> {
 
     public void getData() {
         if (getMvpView() != null) {
-            if(getMvpView().getToken() == "") {
-                getMvpView().emptyNonToken("Token is non empty.");
-            } else {
+            if(getMvpView().getToken().equals("")) {
                 getMvpView().emptyToken("Token is empty.");
+            } else {
+                getMvpView().emptyNonToken("Token is non empty.");
+
             }
         }
     }
 
-    public void getRealData() {
-        if (getMvpView() != null) {
-           // int length = getMvpView().getRealToken().length();
-            if(true) {
-                getMvpView().emptyNonToken("Token is non empty.");
-            } else {
-                getMvpView().emptyToken("Token is empty.");
-            }
-        }
-    }
 }

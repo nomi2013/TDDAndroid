@@ -49,6 +49,10 @@ public class MainPresenterTest {
 
     @Test
     public void whenTokenEmpty() throws Exception {
+
+        // if presenter needs data, mock fake data
+        Mockito.when(view.getToken()).thenReturn("");
+
         // unit test
         presenter.getData();
 
@@ -58,20 +62,17 @@ public class MainPresenterTest {
 
     @Test
     public void whenTokenNonEmpty() throws Exception {
-        // unit test
-        presenter.getRealData();
 
+        // if presenter needs data, mock fake data
+        Mockito.when(view.getToken()).thenReturn("abcd");
+
+        // unit test
+        presenter.getData();
+
+        // verify presenter calls those methods.
         Mockito.verify(view).emptyNonToken("Token is non empty.");
 
     }
 
 
 }
-
-/*
-if(!TextUtils.isEmpty(getMvpView().getToken())) {
-        getMvpView().emptyNonToken("Token is non empty.");
-        } else {
-        getMvpView().emptyToken("Token is empty.");
-        }
-       */

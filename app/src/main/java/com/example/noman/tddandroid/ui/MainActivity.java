@@ -22,8 +22,7 @@ public class MainActivity extends DaggerAppCompatActivity implements MainView{
         setContentView(R.layout.activity_main);
 
         mainPresenter.attachView(this);
-       // mainPresenter.getData();
-        mainPresenter.getRealData();
+        mainPresenter.getData();
     }
 
     @Override
@@ -34,11 +33,6 @@ public class MainActivity extends DaggerAppCompatActivity implements MainView{
     @Override
     public String getToken() {
         return "";
-    }
-
-    @Override
-    public String getRealToken() {
-        return "hgfhddgdgfdgd";
     }
 
     @Override

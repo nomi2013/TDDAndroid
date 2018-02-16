@@ -10,7 +10,6 @@ public interface MainView extends MvpView{
     void onMainLoaded();
     void makeToast(String s);
     String getToken();
-    String getRealToken();
     void emptyToken(String s);
     void emptyNonToken(String s);
 }
