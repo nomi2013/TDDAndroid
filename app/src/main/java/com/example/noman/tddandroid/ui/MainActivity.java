@@ -1,10 +1,11 @@
 package com.example.noman.tddandroid.ui;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.noman.tddandroid.R;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -22,7 +23,9 @@ public class MainActivity extends DaggerAppCompatActivity implements MainView{
         setContentView(R.layout.activity_main);
 
         mainPresenter.attachView(this);
-        mainPresenter.getData();
+       // mainPresenter.getData();
+       // mainPresenter.getTopss();
+        mainPresenter.getAllEmployee(new NetworkHandler());
     }
 
     @Override
@@ -36,6 +39,21 @@ public class MainActivity extends DaggerAppCompatActivity implements MainView{
     }
 
     @Override
+    public void employeeRestopresponseponse(List<Topics> employee) {
+
+    }
+
+    @Override
+    public void employeeResponse(Employee employee) {
+
+    }
+
+    @Override
+    public void errorOccured(Throwable e) {
+
+    }
+
+    @Override
     public void emptyToken(String s) {
         makeToast(s);
     }
@@ -43,6 +61,11 @@ public class MainActivity extends DaggerAppCompatActivity implements MainView{
     @Override
     public void emptyNonToken(String s) {
         makeToast(s);
+    }
+
+    @Override
+    public void showProgressIndicator() {
+
     }
 
     @Override

@@ -39,14 +39,6 @@ public class MainPresenterTest {
         assertNotNull(view);
     }
 
-    @After
-    public void tearDown() throws Exception {
-    }
-
-    @Test
-    public void attachView() throws Exception {
-    }
-
     @Test
     public void whenTokenEmpty() throws Exception {
 
@@ -74,5 +66,10 @@ public class MainPresenterTest {
 
     }
 
+    @After
+    public void tearDown() throws Exception {
+        presenter.detachView();
+        presenter = null;
+    }
 
 }

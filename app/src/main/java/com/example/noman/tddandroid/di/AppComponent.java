@@ -3,6 +3,7 @@ package com.example.noman.tddandroid.di;
 import android.app.Application;
 
 import com.example.noman.tddandroid.AndroidSampleApp;
+import com.example.noman.tddandroid.ui.MainActivity;
 
 import javax.inject.Singleton;
 
