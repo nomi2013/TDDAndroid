@@ -1,10 +1,13 @@
 package com.example.noman.tddandroid.ui;
 
+import android.location.Address;
+import android.location.Geocoder;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import com.example.noman.tddandroid.R;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -26,8 +29,32 @@ public class MainActivity extends DaggerAppCompatActivity implements MainView{
        // mainPresenter.getData();
        // mainPresenter.getTopss();
         mainPresenter.getAllEmployee(new NetworkHandler());
+        getZipCode();
+
+
     }
 
+    private void  getZipCode()
+
+    {
+        Geocoder gc = new Geocoder(this);
+        if (gc.isPresent()) {
+            try {
+                List<Address> list = gc.getFromLocation(37.42279, -122.08506, 1);
+                Address address = list.get(0);
+
+                StringBuffer str = new StringBuffer();
+//                str.append(“Name: ” + address.getLocality() + “\n”);
+//                str.append(“Sub-Admin Ares: ” + address.getSubAdminArea() + “\n”);
+//                str.append(“Admin Area: ” + address.getAdminArea() + “\n”);
+//                str.append(“Country: ” + address.getCountryName() + “\n”);
+//                str.append(“Country Code: ” + address.getCountryCode() + “\n”);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
+    }
     @Override
     public void onMainLoaded() {
         makeToast("Nice..");

@@ -4,6 +4,10 @@ import com.example.noman.tddandroid.retro.ApiServices;
 import com.google.gson.Gson;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
+import java.util.Arrays;
+import okhttp3.CacheControl;
+import okhttp3.Request;
+import okhttp3.mockwebserver.Dispatcher;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -119,17 +123,19 @@ public class MainPresenterTest3 {
                 .addConverterFactory(GsonConverterFactory.create())
                 .baseUrl(mMockWebServer.url(url))
                 .build();
+
         ApiServices remoteDataSource = retrofit.create(ApiServices.class);
+
         Observable<List<Topics>> call = remoteDataSource.getTopicsRx();
+
         assertTrue(call.toString() != null);
+
         mSubscriber.assertNoErrors();
-        RecordedRequest request1 = mMockWebServer.takeRequest();
-        assertEquals("topics/", request1.getPath());
+
+
             mMockWebServer.shutdown();
         } catch (IOException e) {
             e.printStackTrace();
-        } catch (InterruptedException i){
-
         }
 
     }
@@ -139,45 +145,76 @@ public class MainPresenterTest3 {
         try {
             // Create a MockWebServer. These are lean enough that you can create a new
             // instance for every unit test.
-            MockWebServer server = new MockWebServer();
-            HttpUrl baseUrl = server.url("https://guessthebeach.herokuapp.com/api/topics/");
-            server.url(baseUrl.toString());
+
+            HttpUrl baseUrl = mMockWebServer.url("https://guessthebeach.herokuapp.com/api/topics/");
+            mMockWebServer.url(baseUrl.toString());
 
             // Schedule some responses.
-            server.enqueue(new MockResponse().setBody(new Gson().toJson(mResultList)));
+            MockResponse mockResponse = new MockResponse();
 
             // Start the server.
            // server.start();
 
+            final Dispatcher dispatcher = new Dispatcher() {
 
-            // Optional: confirm that your app made the HTTP requests you were expecting.
-            RecordedRequest request1 = server.takeRequest();
-            assertEquals("topics/", request1.getPath());
-            //assertNotNull(request1.getHeader("Authorization"));
+                @Override
+                public MockResponse dispatch(RecordedRequest request) throws InterruptedException {
 
-            // Shut down the server. Instances cannot be reused.
+                    if (request.getPath().equals("/v1/login/auth/")){
+                        return new MockResponse().setResponseCode(200);
+                    } else if (request.getPath().equals("v1/check/version/")){
+                        return new MockResponse().setResponseCode(200).setBody("version=9");
+                    } else if (request.getPath().equals("/v1/profile/info")) {
+                        return new MockResponse().setResponseCode(200).setBody(new Gson().toJson(mResultList));
+                    }
+                    return new MockResponse().setResponseCode(404);
+                }
+            };
 
-            server.shutdown();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+            mMockWebServer.setDispatcher(dispatcher);
+            mMockWebServer.enqueue(mockResponse.setBody(new Gson().toJson(mResultList)));
+
+
+
+
+
+            //  mMockWebServer.shutdown();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
     @Test
-    public void testing() throws Exception {
-        // Create a MockWebServer. These are lean enough that you can create a new
-        // instance for every unit test.
-
-        // Schedule some responses.
-        mMockWebServer.enqueue(new MockResponse().setBody("hello, world!"));
-        // Start the server.
-        mMockWebServer.start();
-
-        RecordedRequest request3 = mMockWebServer.takeRequest();
-        assertEquals("/v1/chat/messages/3", request3.getPath());
-
-        // Shut down the server. Instances cannot be reused.
+    public void testCreateNoteRequest() throws Exception {
         mMockWebServer.shutdown();
+
+        HttpUrl baseUrl = mMockWebServer.url("https://guessthebeach.herokuapp.com/api/topics");
+        mMockWebServer.url(baseUrl.toString());
+
+       // mMockWebServer.start();
+
+        mMockWebServer.enqueue(new MockResponse());
+
+        RecordedRequest request = mMockWebServer.takeRequest(10, TimeUnit.SECONDS);
+        assertEquals("/topics", request.getPath());
+        assertEquals("POST", request.getMethod());
+
     }
+
+    @Test public void cacheControl() throws Exception {
+        Request request = new Request.Builder()
+                .cacheControl(new CacheControl.Builder().noCache().build())
+                .url("https://guessthebeach.herokuapp.com/api/topics/")
+                .build();
+        assertEquals(Arrays.asList("no-cache"), request.headers("Cache-Control"));
+    }
+
+
+
 }
+
+//    RecordedRequest recordedRequest = server.takeRequest();
+//    assertEquals("POST", recordedRequest.getMethod());
+//        assertEquals("def", recordedRequest.getBody().readUtf8());
+//        assertEquals("3", recordedRequest.getHeader("Content-Length"));
+//        assertEquals("text/plain; charset=utf-8", recordedRequest.getHeader("Content-Type"));

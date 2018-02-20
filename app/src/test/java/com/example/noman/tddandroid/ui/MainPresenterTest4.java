@@ -36,8 +36,7 @@ public class MainPresenterTest4 {
 
     @Mock
     private MainView mView;
-    //@Rule
-    //public RxSchedulersOverrideRule rxSchedulersOverrideRule = new RxSchedulersOverrideRule();
+
 
     private MainPresenter mPresenter;
 
